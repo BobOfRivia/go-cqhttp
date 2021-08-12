@@ -355,18 +355,19 @@ func (bot *CQBot) SendPrivateMessage(target int64, groupID int64, m *message.Sen
 				id = bot.InsertTempMessage(target, msg)
 			}
 		}
-	} else if _, ok := bot.oneWayMsgCache.Load(target); ok { // 单向好友
+	} else { // 单向好友
 		msg := bot.Client.SendPrivateMessage(target, m)
 		if msg != nil {
 			id = bot.InsertPrivateMessage(msg)
 		}
-	} else {
-		nickname := "Unknown"
-		if summaryInfo, _ := bot.Client.GetSummaryInfo(target); summaryInfo != nil {
-			nickname = summaryInfo.Nickname
-		}
-		log.Errorf("错误: 请先添加 %v(%v) 为好友", nickname, target)
 	}
+	//else {
+	//	nickname := "Unknown"
+	//	if summaryInfo, _ := bot.Client.GetSummaryInfo(target); summaryInfo != nil {
+	//		nickname = summaryInfo.Nickname
+	//	}
+	//	log.Errorf("错误: 请先添加 %v(%v) 为好友", nickname, target)
+	//}
 	return id
 }
 
